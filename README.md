@@ -1,0 +1,3 @@
+Hi, this is a simple and crooked OSC that outputs the joining and exiting of players from the server to your chat and console...
+And that's it. 
+I'm going to eat some cookies.
