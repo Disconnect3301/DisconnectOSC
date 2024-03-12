@@ -292,11 +292,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\vs\\vs.csproj",
-      "projectName": "vs",
-      "projectPath": "D:\\vs\\vs.csproj",
+      "projectUniqueName": "D:\\DisconnectOSC\\DisconnectOSC.csproj",
+      "projectName": "DisconnectOSC",
+      "projectPath": "D:\\DisconnectOSC\\DisconnectOSC.csproj",
       "packagesPath": "C:\\Users\\Disconnect3301\\.nuget\\packages\\",
-      "outputPath": "D:\\vs\\obj\\",
+      "outputPath": "D:\\DisconnectOSC\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
