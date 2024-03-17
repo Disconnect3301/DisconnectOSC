@@ -67,11 +67,12 @@ namespace MainOSC
                                 }
 
                                 string triggerTime = ExtractTimeFromLine(triggerLine);
-                                triggerLine = Regex.Replace(triggerLine, @"(\d{4}\.\d{2}\.\d{2})\s(\d{2}:\d{2}:\d{2})", "\n<B>[$2]</B>");
+                                triggerLine = Regex.Replace(triggerLine, @"(\d{4}\.\d{2}\.\d{2})\s(\d{2}:\d{2}:\d{2})", "<B>[$2]</B>");
 
                                 if (triggerTime != lastTriggerTime)
                                 {
                                     string messageToSend = RemoveColorTags(triggerLine);
+                                    Console.WriteLine();
                                     PrintColoredText(triggerLine + "</P>\n");
                                     OscChatbox.SendMessage(messageToSend, direct: true);
 
