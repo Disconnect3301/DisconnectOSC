@@ -4,6 +4,23 @@ namespace MainOSC
 {
     class Boop
     {
+        public static void Logic()
+        {
+            DisconnectOSC.isBooping = true;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Booping - ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("STARTED!");
+            Console.ResetColor();
+            var boopThread = new Thread(() =>
+            {
+                Start();
+            })
+            {
+                IsBackground = true
+            };
+            boopThread.Start();
+        }
         public static void Start()
         {
             while (DisconnectOSC.isBooping)

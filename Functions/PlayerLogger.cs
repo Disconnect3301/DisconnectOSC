@@ -6,6 +6,23 @@ namespace MainOSC
 {
     class PlayerLogger
     {
+        public static void Logic()
+        {
+            DisconnectOSC.isPlayerLogger = true;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("PlayerLogger - ");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("STARTED!");
+            Console.ResetColor();
+            var playerLoggerThread = new Thread(() =>
+            {
+                Start();
+            })
+            {
+                IsBackground = true
+            };
+            playerLoggerThread.Start();
+        }
         public static void Start()
         {
 
