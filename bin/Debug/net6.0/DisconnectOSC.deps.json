@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "DisconnectOSC/1.0.0": {
         "dependencies": {
+          "InputSimulator": "1.0.4",
           "VRCOscLib": "1.4.3"
         },
         "runtime": {
@@ -22,6 +23,14 @@
           "lib/netstandard2.1/BuildSoft.OscCore.dll": {
             "assemblyVersion": "1.2.1.0",
             "fileVersion": "1.2.1.0"
+          }
+        }
+      },
+      "InputSimulator/1.0.4": {
+        "runtime": {
+          "lib/net20/WindowsInput.dll": {
+            "assemblyVersion": "1.0.4.0",
+            "fileVersion": "1.0.4.0"
           }
         }
       },
@@ -74,6 +83,13 @@
       "sha512": "sha512-cphgVS5fnGkYqqGw4q5JSD8FvD/+PIz4GALFGwRt519fDjjTm+gYRQreVJRFnirr6F3VW/rGoYJCnm9R11lgsQ==",
       "path": "buildsoft.osccore/1.2.1",
       "hashPath": "buildsoft.osccore.1.2.1.nupkg.sha512"
+    },
+    "InputSimulator/1.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-D0LvRCPQMX6/FJHBjng+RO+wRDuHTJrfo7IAc7rmkPvRqchdVGJWg3y70peOtDy3OLNK+HSOwVkH4GiuLnkKgA==",
+      "path": "inputsimulator/1.0.4",
+      "hashPath": "inputsimulator.1.0.4.nupkg.sha512"
     },
     "Microsoft.CSharp/4.7.0": {
       "type": "package",

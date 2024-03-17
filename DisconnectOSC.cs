@@ -1,11 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using BuildSoft.VRChat.Osc.Chatbox;
-using System.Threading.Tasks;
-using System.Globalization;
+﻿using System.Runtime.InteropServices;
+
 namespace MainOSC
 {
     public class DisconnectOSC
@@ -14,10 +8,18 @@ namespace MainOSC
         public static bool isInfinityTyping = false;
         public static bool isBooping = false;
         public static bool isHideName = false;
+        public static bool isSpinBot = false;
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        public static extern int GetWindowText(IntPtr hWnd, System.Text.StringBuilder text, int count);
+
         public static void Help()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName");
+            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("'0' - Disable ALL");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -27,11 +29,15 @@ namespace MainOSC
         
         public static void Debug()
         {
-            Console.WriteLine("\nDebug Panel\n----------");
+            Console.WriteLine("\n-------------------\nDebug Panel\n-------------------");
             CheckDebugParameter("PlayerLogger", isPlayerLogger);
             CheckDebugParameter("InfinityTyping", isInfinityTyping);
             CheckDebugParameter("Booping", isBooping);
             CheckDebugParameter("HideName", isHideName);
+            CheckDebugParameter("SpinBot", isSpinBot);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("-------------------");
+            Console.ResetColor();
         }
         static void CheckDebugParameter(string paramName, bool paramValue)
         {
@@ -44,6 +50,7 @@ namespace MainOSC
                 case "InfinityTyping":
                 case "Booping":
                 case "HideName":
+                case "SpinBot":
                     Console.Write($"{paramName}: ");
                     Console.ForegroundColor = paramValue ? ConsoleColor.Green : ConsoleColor.DarkRed;
                     Console.WriteLine($"{status}");
@@ -51,11 +58,22 @@ namespace MainOSC
             }
             Console.ResetColor();
         }
+        public static string GetActiveWindowTitle(IntPtr hWnd)
+        {
+            const int nChars = 256;
+            System.Text.StringBuilder buff = new System.Text.StringBuilder(nChars);
+            if (GetWindowText(hWnd, buff, nChars) > 0)
+            {
+                return buff.ToString();
+            }
+            return "";
+        }
+
         public static void Main()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Random random = new Random();
 
+            Random random = new Random();
             ConsoleColor[] colors = Enum.GetValues(typeof(ConsoleColor))
                                       .Cast<ConsoleColor>()
                                       .Where(c => c != ConsoleColor.Black && c != ConsoleColor.White)
@@ -68,7 +86,7 @@ namespace MainOSC
             int consolePadding = (consoleWidth - Creator.Length) / 2;
             Console.WriteLine(Creator.PadLeft(consolePadding + Creator.Length));
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName");
+            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("'0' - Disable ALL");
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -92,23 +110,67 @@ namespace MainOSC
                         var playerLoggerThread = new Thread(() =>
                         {
                             PlayerLogger.Start();
-                        });
-                        playerLoggerThread.IsBackground = true;
+                        })
+                        {
+                            IsBackground = true
+                        };
                         playerLoggerThread.Start();
                     }
-                    else if (!isBooping && !isHideName)
+                    else if (isBooping)
+                    {
+                        isPlayerLogger = true;
+                        isBooping = false;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("PlayerLogger - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        var playerLoggerThread = new Thread(() =>
+                        {
+                            PlayerLogger.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        playerLoggerThread.Start();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isHideName)
+                    {
+                        isPlayerLogger = true;
+                        isHideName = false;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("PlayerLogger - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        var playerLoggerThread = new Thread(() =>
+                        {
+                            PlayerLogger.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        playerLoggerThread.Start();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Disabled!");
+                        Console.ResetColor();
+                    }
+                    else
                     {
                         isPlayerLogger = false;
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("PlayerLogger - ");
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine("STOPPED!");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("Cannot be enabled while [HideName] or [Booping] is running!\n");
                         Console.ResetColor();
                     }
                 }
@@ -125,11 +187,59 @@ namespace MainOSC
                         var infinityTypingThread = new Thread(() =>
                         {
                             InfinityTyping.Start();
-                        });
-                        infinityTypingThread.IsBackground = true;
+                        })
+                        {
+                            IsBackground = true
+                        };
                         infinityTypingThread.Start();
                     }
-                    else if (!isBooping && !isHideName)
+                    else if (isBooping)
+                    {
+                        Console.Write("InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isInfinityTyping = true;
+                        isBooping = false;
+                        var infinityTypingThread = new Thread(() =>
+                        {
+                            InfinityTyping.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        infinityTypingThread.Start();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isHideName)
+                    {
+                        Console.Write("InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isInfinityTyping = true;
+                        isHideName = false;
+                        var infinityTypingThread = new Thread(() =>
+                        {
+                            InfinityTyping.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        infinityTypingThread.Start();
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else
                     {
                         isInfinityTyping = false;
                         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -138,16 +248,27 @@ namespace MainOSC
                         Console.WriteLine("STOPPED!");
                         Console.ResetColor();
                     }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write("Cannot be enabled while [HideName] or [Booping] is running!\n");
-                        Console.ResetColor();
-                    }
                 }
                 else if (userInput == ConsoleKey.D3 || userInput == ConsoleKey.NumPad3)
                 {
-                    if (!isBooping)
+                    if (!isBooping && !isPlayerLogger && !isInfinityTyping && !isHideName)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isBooping = true;
+                        var boopThread = new Thread(() =>
+                        {
+                            Boop.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        boopThread.Start();
+                    }
+                    else if (isPlayerLogger && isInfinityTyping)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("Booping - ");
@@ -157,16 +278,88 @@ namespace MainOSC
                         isBooping = true;
                         isPlayerLogger = false;
                         isInfinityTyping = false;
-                        isHideName = false;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("WARNING: PlayerLogger, InfinityTyping, HideName - Disabled!");
-                        Console.ResetColor();
                         var boopThread = new Thread(() =>
                         {
                             Boop.Start();
-                        });
-                        boopThread.IsBackground = true;
+                        })
+                        {
+                            IsBackground = true
+                        };
                         boopThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("PlayerLogger | InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isPlayerLogger)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isBooping = true;
+                        isPlayerLogger = false;
+                        var boopThread = new Thread(() =>
+                        {
+                            Boop.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        boopThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("PlayerLogger - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isInfinityTyping)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isBooping = true;
+                        isInfinityTyping = false;
+                        var boopThread = new Thread(() =>
+                        {
+                            Boop.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        boopThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isHideName)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isBooping = true;
+                        isHideName = false;
+                        var boopThread = new Thread(() =>
+                        {
+                            Boop.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        boopThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
                     }
                     else
                     {
@@ -180,7 +373,24 @@ namespace MainOSC
                 }
                 else if (userInput == ConsoleKey.D4 || userInput == ConsoleKey.NumPad4)
                 {
-                    if (!isHideName)
+                    if (!isHideName && !isPlayerLogger && !isInfinityTyping && !isBooping)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isHideName = true;
+                        var hideNameThread = new Thread(() =>
+                        {
+                            HideName.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        hideNameThread.Start();
+                    }
+                    else if(isPlayerLogger && isInfinityTyping)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("HideName - ");
@@ -190,16 +400,88 @@ namespace MainOSC
                         isHideName = true;
                         isPlayerLogger = false;
                         isInfinityTyping = false;
-                        isBooping = false;
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine("WARNING: PlayerLogger, InfinityTyping, Booping - Disabled!");
-                        Console.ResetColor();
                         var hideNameThread = new Thread(() =>
                         {
                             HideName.Start();
-                        });
-                        hideNameThread.IsBackground = true;
+                        })
+                        {
+                            IsBackground = true
+                        };
                         hideNameThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("PlayerLogger | InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isPlayerLogger)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isHideName = true;
+                        isPlayerLogger = false;
+                        var hideNameThread = new Thread(() =>
+                        {
+                            HideName.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        hideNameThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("PlayerLogger - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isInfinityTyping)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isHideName = true;
+                        isInfinityTyping = false;
+                        var hideNameThread = new Thread(() =>
+                        {
+                            HideName.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        hideNameThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("InfinityTyping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
+                    }
+                    else if (isBooping)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("HideName - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isHideName = true;
+                        isBooping = false;
+                        var hideNameThread = new Thread(() =>
+                        {
+                            HideName.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        hideNameThread.Start();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write("Booping - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("Automatically Disabled!");
+                        Console.ResetColor();
                     }
                     else
                     {
@@ -211,12 +493,43 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                else if (userInput == ConsoleKey.D5 || userInput == ConsoleKey.NumPad5)
+                {
+                    if (!isSpinBot)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("SpinBot - ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("STARTED!");
+                        Console.ResetColor();
+                        isSpinBot = true;
+
+                        var spinBotThread = new Thread(() =>
+                        {
+                            SpinBot.Start();
+                        })
+                        {
+                            IsBackground = true
+                        };
+                        spinBotThread.Start();
+                    }
+                    else
+                    {
+                        isSpinBot = false;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("SpinBot - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("STOPPED!");
+                        Console.ResetColor();
+                    }
+                }
                 else if (userInput == ConsoleKey.D0 || userInput == ConsoleKey.NumPad0)
                 {
                     isPlayerLogger = false;
                     isInfinityTyping = false;
                     isBooping = false;
                     isHideName = false;
+                    isSpinBot = false;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("All Functions Disabled!");
                     Console.ResetColor();
@@ -239,6 +552,7 @@ namespace MainOSC
 Полезные Команды:
 dotnet add package VRCOscLib --version 1.4.3 - добавление библиотеки VRChat в проект.
 dotnet publish -c Release -p:DebugType=none -r win-x64 --self-contained true -p:PublishSingleFile=true -p:PublishTrimmed=true - Компилирование EXE файла.
+dotnet publish -c Release -p:DebugType=none -r win-x64 --self-contained false -p:PublishSingleFile=true - FIX Компилирование EXE файла.
 
 git status - показывает состояние проекта.
 git add . - добавляет изменения в проект.

@@ -1,18 +1,27 @@
 {
   "version": 2,
-  "dgSpecHash": "2dESoCVlhScLqsGSokLG4jYDmxpeVKfSF80AZ1joJjNzcQYDOokvcPIYYJwAqdraHoGa3ET97AQreWyKiPz5Wg==",
+  "dgSpecHash": "qeOPFVEcdcX0eoUGaFa4QgleVkbEUt7EJizbvmdUN4Dj+TSnHJPOzC+EV9XlHBfxIP175x2L+5cH/II3rncvhw==",
   "success": true,
   "projectFilePath": "D:\\DisconnectOSC\\DisconnectOSC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Disconnect3301\\.nuget\\packages\\buildsoft.osccore\\1.2.1\\buildsoft.osccore.1.2.1.nupkg.sha512",
+    "C:\\Users\\Disconnect3301\\.nuget\\packages\\inputsimulator\\1.0.4\\inputsimulator.1.0.4.nupkg.sha512",
     "C:\\Users\\Disconnect3301\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Disconnect3301\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
     "C:\\Users\\Disconnect3301\\.nuget\\packages\\system.collections.immutable\\7.0.0\\system.collections.immutable.7.0.0.nupkg.sha512",
     "C:\\Users\\Disconnect3301\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
-    "C:\\Users\\Disconnect3301\\.nuget\\packages\\vrcosclib\\1.4.3\\vrcosclib.1.4.3.nupkg.sha512",
-    "C:\\Users\\Disconnect3301\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.10\\microsoft.netcore.app.runtime.win-x64.6.0.10.nupkg.sha512",
-    "C:\\Users\\Disconnect3301\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.10.nupkg.sha512",
-    "C:\\Users\\Disconnect3301\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.10\\microsoft.aspnetcore.app.runtime.win-x64.6.0.10.nupkg.sha512"
+    "C:\\Users\\Disconnect3301\\.nuget\\packages\\vrcosclib\\1.4.3\\vrcosclib.1.4.3.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'InputSimulator 1.0.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "libraryId": "InputSimulator",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

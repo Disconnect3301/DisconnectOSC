@@ -18,3 +18,4 @@ D:\DisconnectOSC\obj\Debug\net6.0\refint\DisconnectOSC.dll
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.pdb
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.genruntimeconfig.cache
 D:\DisconnectOSC\obj\Debug\net6.0\ref\DisconnectOSC.dll
+D:\DisconnectOSC\bin\Debug\net6.0\WindowsInput.dll

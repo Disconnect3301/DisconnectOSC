@@ -1,9 +1,4 @@
 using BuildSoft.VRChat.Osc.Chatbox;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MainOSC
 {
@@ -13,7 +8,20 @@ namespace MainOSC
         {
             while (DisconnectOSC.isBooping)
             {
-                OscChatbox.SendMessage("*boop*", direct: true, complete: true);
+                Random random = new Random();
+                int randomNumber = random.Next(1, 3);
+
+                string wowBoop = "";
+                switch (randomNumber)
+                {
+                    case 1:
+                        wowBoop = "*boop*";
+                        break;
+                    case 2:
+                        wowBoop = "*\nb\no\no\np\n*";
+                        break;
+                }
+                OscChatbox.SendMessage(wowBoop, direct: true, complete: true);
                 Thread.Sleep(100);
                 OscChatbox.SendMessage("", direct: true, complete: false);
                 Thread.Sleep(1500);
