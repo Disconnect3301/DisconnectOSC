@@ -9,6 +9,7 @@ namespace MainOSC
         public static bool isBooping = false;
         public static bool isHideName = false;
         public static bool isSpinBot = false;
+        public static bool isHelp = false;
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
@@ -22,11 +23,15 @@ namespace MainOSC
             Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("'0' - Disable ALL");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Debug();
             Console.ResetColor();
+            if (isHelp)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Debug();
+                Console.ResetColor();
+            }
         }
-        
+
         public static void Debug()
         {
             Console.WriteLine("\n-------------------\nDebug Panel\n-------------------");
@@ -390,7 +395,7 @@ namespace MainOSC
                         };
                         hideNameThread.Start();
                     }
-                    else if(isPlayerLogger && isInfinityTyping)
+                    else if (isPlayerLogger && isInfinityTyping)
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("HideName - ");
@@ -525,14 +530,25 @@ namespace MainOSC
                 }
                 else if (userInput == ConsoleKey.D0 || userInput == ConsoleKey.NumPad0)
                 {
-                    isPlayerLogger = false;
-                    isInfinityTyping = false;
-                    isBooping = false;
-                    isHideName = false;
-                    isSpinBot = false;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("All Functions Disabled!");
-                    Console.ResetColor();
+                    if (!isHelp)
+                    {
+                        isHelp = true;
+                        isPlayerLogger = false;
+                        isInfinityTyping = false;
+                        isBooping = false;
+                        isHideName = false;
+                        isSpinBot = false;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("All Functions Disabled!");
+                        Console.ResetColor();
+                        Help();
+                    }
+                    else
+                    {
+                        isHelp = false;
+                        Console.Clear();
+                        Help();
+                    }
                 }
                 else if (userInput == ConsoleKey.D9 || userInput == ConsoleKey.NumPad9)
                 {
@@ -557,4 +573,5 @@ dotnet publish -c Release -p:DebugType=none -r win-x64 --self-contained false -p
 git status - показывает состояние проекта.
 git add . - добавляет изменения в проект.
 git commit -m "message" - коммит.
+git push origin master - отправка изменений на GitHub.
 */
