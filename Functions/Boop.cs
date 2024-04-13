@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using BuildSoft.VRChat.Osc.Chatbox;
 
 namespace MainOSC
@@ -39,6 +41,9 @@ namespace MainOSC
                         break;
                 }
                 OscChatbox.SendMessage(wowBoop, direct: true, complete: true);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("[LOG] Sending Boop!");
+                Console.ResetColor();
                 Thread.Sleep(100);
                 OscChatbox.SendMessage("", direct: true, complete: false);
                 Thread.Sleep(1500);

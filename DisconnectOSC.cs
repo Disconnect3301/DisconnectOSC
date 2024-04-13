@@ -1,7 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Threading;
+using System.Runtime.InteropServices;
+using BuildSoft.VRChat.Osc.Chatbox;
 
 namespace MainOSC
 {
+    #region Start Setup
     public class DisconnectOSC
     {
         public static bool isPlayerLogger = false;
@@ -9,6 +13,7 @@ namespace MainOSC
         public static bool isBooping = false;
         public static bool isHideName = false;
         public static bool isSpinBot = false;
+        public static bool isRecording = false;
         public static bool isHelp = false;
         public static int consoleWidth = Console.WindowWidth;
         public static string separator = new string('-', consoleWidth);
@@ -22,7 +27,7 @@ namespace MainOSC
         public static void Help()
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot");
+            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot\n'6' - Recording");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("'0' - Disable ALL");
             Console.ResetColor();
@@ -42,6 +47,7 @@ namespace MainOSC
             CheckDebugParameter("Booping", isBooping);
             CheckDebugParameter("HideName", isHideName);
             CheckDebugParameter("SpinBot", isSpinBot);
+            CheckDebugParameter("Recording", isRecording);
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write(separator);
             Console.ResetColor();
@@ -58,6 +64,7 @@ namespace MainOSC
                 case "Booping":
                 case "HideName":
                 case "SpinBot":
+                case "Recording":
                     Console.Write($"{paramName}: ");
                     Console.ForegroundColor = paramValue ? ConsoleColor.Green : ConsoleColor.DarkRed;
                     Console.WriteLine($"{status}");
@@ -80,6 +87,8 @@ namespace MainOSC
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+            BoopMe.Logic();
+
             Random random = new Random();
             ConsoleColor[] colors = Enum.GetValues(typeof(ConsoleColor))
                                       .Cast<ConsoleColor>()
@@ -92,15 +101,17 @@ namespace MainOSC
             int consolePadding = (consoleWidth - Creator.Length) / 2;
             Console.WriteLine(Creator.PadLeft(consolePadding + Creator.Length));
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot");
+            Console.WriteLine("Command List:\n'1' - PlayerLogger\n'2' - InfinityTyping\n'3' - Booping\n'4' - HideName\n'5' - SpinBot\n'6' - Recording");
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("'0' - Disable ALL");
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\n'9' - View Command List");
             Console.ResetColor();
+            #endregion
 
             while (true)
             {
+                #region Player Logger
                 var userInput = Console.ReadKey().Key;
                 Console.WriteLine();
                 if (userInput == ConsoleKey.D1 || userInput == ConsoleKey.NumPad1)
@@ -117,7 +128,7 @@ namespace MainOSC
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("Booping - ");
                         Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("Disabled!");
+                        Console.WriteLine("Automatically Disabled!");
                         Console.ResetColor();
                     }
                     else if (isHideName)
@@ -128,7 +139,7 @@ namespace MainOSC
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write("HideName - ");
                         Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("Disabled!");
+                        Console.WriteLine("Automatically Disabled!");
                         Console.ResetColor();
                     }
                     else
@@ -141,6 +152,8 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                #endregion
+                #region Infinity Typing
                 else if (userInput == ConsoleKey.D2 || userInput == ConsoleKey.NumPad2)
                 {
                     if (!isInfinityTyping && !isBooping && !isHideName)
@@ -179,6 +192,8 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                #endregion
+                #region Booping
                 else if (userInput == ConsoleKey.D3 || userInput == ConsoleKey.NumPad3)
                 {
                     if (!isBooping && !isPlayerLogger && !isInfinityTyping && !isHideName)
@@ -240,6 +255,8 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                #endregion
+                #region Hide Name
                 else if (userInput == ConsoleKey.D4 || userInput == ConsoleKey.NumPad4)
                 {
                     if (!isHideName && !isPlayerLogger && !isInfinityTyping && !isBooping)
@@ -300,6 +317,8 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                #endregion
+                #region Spin Bot
                 else if (userInput == ConsoleKey.D5 || userInput == ConsoleKey.NumPad5)
                 {
                     if (!isSpinBot)
@@ -316,6 +335,27 @@ namespace MainOSC
                         Console.ResetColor();
                     }
                 }
+                #endregion
+                #region Recording
+                else if (userInput == ConsoleKey.D6 || userInput == ConsoleKey.NumPad6)
+                {
+                    if (!isRecording)
+                    {
+                        Recording.Logic();
+                    }
+                    else
+                    {
+                        isRecording = false;
+                        OscChatbox.SendMessage("", direct: true, complete: false);
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("Recording - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("STOPPED!");
+                        Console.ResetColor();
+                    }
+                }
+                #endregion
+                #region Functions Disable
                 else if (userInput == ConsoleKey.D0 || userInput == ConsoleKey.NumPad0)
                 {
                     isPlayerLogger = false;
@@ -323,10 +363,13 @@ namespace MainOSC
                     isBooping = false;
                     isHideName = false;
                     isSpinBot = false;
+                    isRecording = false;
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("All Functions Disabled!");
                     Console.ResetColor();
                 }
+                #endregion
+                #region Help Menu
                 else if (userInput == ConsoleKey.D9 || userInput == ConsoleKey.NumPad9)
                 {
                     if (!isHelp)
@@ -350,6 +393,7 @@ namespace MainOSC
                     Console.WriteLine("Incorrect Input, Try '9' To See Command List!");
                     Console.ResetColor();
                 }
+                #endregion
             }
         }
     }

@@ -1,5 +1,6 @@
+using System;
+using System.Threading;
 using WindowsInput;
-using BuildSoft.VRChat.Osc.Chatbox;
 
 namespace MainOSC
 {
@@ -25,7 +26,7 @@ namespace MainOSC
         public static void Start()
         {
             Random random = new Random();
-            int randomSpeed = random.Next(-500, 501);
+            int randomSpeed = random.Next(-300, 301);
             Console.ForegroundColor = ConsoleColor.DarkMagenta;
             Console.Write("Random Speed: ");
             Console.ForegroundColor = ConsoleColor.Yellow;

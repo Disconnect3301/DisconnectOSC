@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using System.Text.RegularExpressions;
 using BuildSoft.VRChat.Osc.Chatbox;
 using System.Globalization;

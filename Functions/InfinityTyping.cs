@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using BuildSoft.VRChat.Osc.Chatbox;
 
 namespace MainOSC
@@ -26,6 +28,9 @@ namespace MainOSC
             while (DisconnectOSC.isInfinityTyping)
             {
                 OscChatbox.SetIsTyping(true);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("[LOG] Sending Typing Status!");
+                Console.ResetColor();
                 Thread.Sleep(2000);
             }
         }

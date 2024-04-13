@@ -1,3 +1,5 @@
+using System;
+using System.Threading;
 using BuildSoft.VRChat.Osc.Chatbox;
 
 namespace MainOSC
@@ -27,6 +29,9 @@ namespace MainOSC
             {
                 string HideMe = "";
                 OscChatbox.SendMessage(HideMe, direct: true);
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("[LOG] Sending HideName!");
+                Console.ResetColor();
                 Thread.Sleep(5000);
             }
         }
