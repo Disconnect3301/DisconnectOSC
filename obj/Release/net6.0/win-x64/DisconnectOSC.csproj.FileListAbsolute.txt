@@ -11,9 +11,9 @@ D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.GeneratedMSBuildEditor
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.AssemblyInfoInputs.cache
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.AssemblyInfo.cs
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.csproj.CoreCompileInputs.cache
-D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.csproj.CopyComplete
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.dll
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\refint\DisconnectOSC.dll
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\DisconnectOSC.genruntimeconfig.cache
 D:\DisconnectOSC\obj\Release\net6.0\win-x64\ref\DisconnectOSC.dll
 D:\DisconnectOSC\bin\Release\net6.0\win-x64\WindowsInput.dll
+D:\DisconnectOSC\obj\Release\net6.0\win-x64\Disconne.60970738.Up2Date
