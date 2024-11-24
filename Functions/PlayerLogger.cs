@@ -93,8 +93,7 @@ namespace MainOSC
                                     string messageToSend = RemoveColorTags(triggerLine);
                                     Console.WriteLine();
                                     PrintColoredText(triggerLine + "</P>\n");
-                                    OscChatbox.SendMessage(messageToSend, direct: true);
-
+                                    OscChatbox.SendMessage(messageToSend + DisconnectOSC.BlankEgg, direct: true);
                                     isEmptyMessageSent = false;
                                     lastTriggerLine = triggerLine;
                                     lastTriggerTime = triggerTime;

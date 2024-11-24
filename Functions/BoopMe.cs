@@ -42,12 +42,16 @@ namespace MainOSC
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[ERROR] In BoopMe.Start: " + e.Message);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Dont worry, you still can use other functions!");
                 Console.ResetColor();
             }
             catch (InvalidOperationException e)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[ERROR] In BoopMe.Start: " + e.Message);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Dont worry, you still can use other functions!");
                 Console.ResetColor();
             }
             catch (Exception e)
@@ -55,6 +59,8 @@ namespace MainOSC
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("[ERROR] In BoopMe.Start: " + e.Message);
                 Console.WriteLine(e.StackTrace);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Dont worry, you still can use other functions!");
                 Console.ResetColor();
             }
 

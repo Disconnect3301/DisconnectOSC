@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "qeOPFVEcdcX0eoUGaFa4QgleVkbEUt7EJizbvmdUN4Dj+TSnHJPOzC+EV9XlHBfxIP175x2L+5cH/II3rncvhw==",
+  "dgSpecHash": "mVrkFZd3atk=",
   "success": true,
   "projectFilePath": "D:\\DisconnectOSC\\DisconnectOSC.csproj",
   "expectedPackageFiles": [
@@ -17,7 +17,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'InputSimulator 1.0.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net6.0'. This package may not be fully compatible with your project.",
+      "message": "Пакет \"InputSimulator 1.0.4\" был восстановлен с помощью \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\", а не целевой платформы проекта \"net6.0\". Этот пакет может быть не полностью совместим с вашим проектом.",
       "libraryId": "InputSimulator",
       "targetGraphs": [
         "net6.0"

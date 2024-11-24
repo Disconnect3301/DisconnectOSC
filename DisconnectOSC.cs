@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Runtime.InteropServices;
 using BuildSoft.VRChat.Osc.Chatbox;
+using BuildSoft.VRChat.Osc.Avatar;
+using BuildSoft.VRChat.Osc.Input;
 
 namespace MainOSC
 {
@@ -15,8 +17,10 @@ namespace MainOSC
         public static bool isSpinBot = false;
         public static bool isRecording = false;
         public static bool isHelp = false;
+        public static bool isSelfBot = false;
         public static int consoleWidth = Console.WindowWidth;
         public static string separator = new string('-', consoleWidth);
+        public static string BlankEgg = "\u0003\u001f";
 
         [DllImport("user32.dll")]
         public static extern IntPtr GetForegroundWindow();
@@ -87,6 +91,20 @@ namespace MainOSC
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
+            OscChatbox.SendMessage("Starting. ✖️" + DisconnectOSC.BlankEgg, direct: true);
+            Thread.Sleep(1200);
+            OscChatbox.SendMessage("Search Updates.. ➕" + DisconnectOSC.BlankEgg, direct: true);
+            Thread.Sleep(1200);
+            OscChatbox.SendMessage("Loading Scripts... ✖️" + DisconnectOSC.BlankEgg, direct: true);
+            Thread.Sleep(1200);
+            OscChatbox.SendMessage("Initializing. ➕" + DisconnectOSC.BlankEgg, direct: true);
+            Thread.Sleep(1200);
+            OscChatbox.SendMessage("Done! ✔️" + DisconnectOSC.BlankEgg, direct: true);
+            Thread.Sleep(1000);
+            OscChatbox.SendMessage("", direct: true);
+            OscChatbox.SendMessage("", direct: true);
+
+
             BoopMe.Logic();
 
             Random random = new Random();
@@ -111,6 +129,7 @@ namespace MainOSC
 
             while (true)
             {
+                OscAxisInput.Vertical.Send(-0.0f);
                 #region Player Logger
                 var userInput = Console.ReadKey().Key;
                 Console.WriteLine();
@@ -355,6 +374,24 @@ namespace MainOSC
                     }
                 }
                 #endregion
+
+                else if (userInput == ConsoleKey.D7 || userInput == ConsoleKey.NumPad7)
+                {
+                    if (!isSelfBot)
+                    {
+                        SelfBot.Logic();
+                    }
+                    else
+                    {
+                        isSelfBot = false;
+                        OscChatbox.SendMessage("", direct: true, complete: false);
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("SelfBot - ");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("STOPPED!");
+                        Console.ResetColor();
+                    }
+                }
                 #region Functions Disable
                 else if (userInput == ConsoleKey.D0 || userInput == ConsoleKey.NumPad0)
                 {

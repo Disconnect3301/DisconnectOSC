@@ -30,7 +30,7 @@ namespace MainOSC
             {
                 TimeSpan elapsed = DateTime.Now - startTime;
                 string timeString = string.Format("[REC {0}] {1:hh\\:mm\\:ss}", GetRecordingSymbol(), elapsed);
-                OscChatbox.SendMessage(timeString, direct: true, complete: false);
+                OscChatbox.SendMessage(timeString + DisconnectOSC.BlankEgg, direct: true, complete: false);
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.WriteLine("[LOG] " + timeString);
                 Console.ResetColor();

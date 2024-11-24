@@ -12,10 +12,11 @@ D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.GeneratedMSBuildEditorConfig.edi
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.AssemblyInfoInputs.cache
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.AssemblyInfo.cs
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.csproj.CoreCompileInputs.cache
-D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.csproj.CopyComplete
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.dll
 D:\DisconnectOSC\obj\Debug\net6.0\refint\DisconnectOSC.dll
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.pdb
 D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.genruntimeconfig.cache
 D:\DisconnectOSC\obj\Debug\net6.0\ref\DisconnectOSC.dll
 D:\DisconnectOSC\bin\Debug\net6.0\WindowsInput.dll
+D:\DisconnectOSC\obj\Debug\net6.0\DisconnectOSC.sourcelink.json
+D:\DisconnectOSC\obj\Debug\net6.0\Disconne.60970738.Up2Date

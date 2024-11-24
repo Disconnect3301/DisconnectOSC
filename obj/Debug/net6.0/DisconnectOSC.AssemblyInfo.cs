@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DisconnectOSC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75713cd40d77b1e2bbfc1284bb7907963ddf03bb")]
 [assembly: System.Reflection.AssemblyProductAttribute("DisconnectOSC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DisconnectOSC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
